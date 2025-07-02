@@ -1,0 +1,2065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Noire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        :root {
+            --primary: #000000;
+            --secondary: #ffffff;
+            --accent: #ff4757;
+            --manga-red: #e74c3c;
+            --manga-blue: #3498db;
+            --manga-yellow: #f1c40f;
+        }
+        
+        body {
+            font-family: 'Comic Neue', cursive;
+            background-color: #f8f8f8;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .manga-font {
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        /* Manga Panel Styles */
+        .manga-panel {
+            border: 3px solid var(--primary);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.2);
+            position: relative;
+            background-color: var(--secondary);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .manga-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
+        }
+        
+        /* Manga Background Effects */
+        .manga-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.05) 0%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+        }
+        
+        .manga-dashed {
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 7px,
+                rgba(0,0,0,0.1) 1px,
+                rgba(0,0,0,0.1) 8px
+            );
+        }
+        
+        .manga-crosshatch {
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0,0,0,0.05),
+                    rgba(0,0,0,0.05) 1px,
+                    transparent 1px,
+                    transparent 6px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(0,0,0,0.05),
+                    rgba(0,0,0,0.05) 1px,
+                    transparent 1px,
+                    transparent 6px
+                );
+        }
+        
+        .manga-speed-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                transparent 0%,
+                transparent 45%,
+                rgba(0,0,0,0.1) 45%,
+                rgba(0,0,0,0.1) 55%,
+                transparent 55%,
+                transparent 100%
+            );
+            background-size: 10px 10px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        /* Manga UI Elements */
+        .speech-bubble {
+            position: relative;
+            background: white;
+            border: 2px solid black;
+            border-radius: 1em;
+            padding: 1em;
+            margin: 1em;
+        }
+        
+        .action-line {
+            position: relative;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .action-line::before, .action-line::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .action-line::before {
+            left: 0;
+        }
+        
+        .action-line::after {
+            right: 0;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transformhttps://c.top4top.io/m_3469mlbei1.mp3: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 red; }
+            25% { text-shadow: -2px 0 blue; }
+            50% { text-shadow: 2px 0 green; }
+            75% { text-shadow: -2px 0 yellow; }
+            100% { text-shadow: 2px 0 purple; }
+        }
+        
+        /* Interactive Elements */
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border: 2px solid var(--primary);
+            border-radius: 9999px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .btn:hover::after {
+            transform: translateX(0);
+        }
+        
+        /* Dark Mode System */
+        .dark-mode-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            border-radius: 15px;
+            background-color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dark-mode-toggle::before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        body.dark {
+            background-color: #121212;
+            color: #f1f1f1;
+        }
+        
+        body.dark .manga-panel {
+            background-color: #1e1e1e;
+            border-color: #f1f1f1;
+            color: #f1f1f1;
+        }
+        
+        body.dark .dark-mode-toggle::before {
+            transform: translateX(30px);
+        }
+        
+            /* Add these styles to your existing style section */
+    .project-tag {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .swiper-slide {
+    height: auto;
+    min-height: 320px; /* Sesuaikan dengan konten */
+    padding: 0.5rem;
+}
+    
+    .flip-card {
+        height: 100%;
+        min-height: 200px;
+        perspective: 1000px;
+    }
+    
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 320px;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+    }
+    
+    .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+    
+    .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 0.5rem;
+    }
+    
+    .flip-card-back {
+        transform: rotateY(180deg);
+    }
+    
+    .swiper-pagination {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: auto;
+    }
+    
+    .swiper-pagination-bullet {
+        width: 10px;
+        height: 10px;
+        background-color: #ccc;
+        opacity: 1;
+        margin: 0 5px;
+        transition: all 0.3s;
+    }
+    
+    .swiper-pagination-bullet-active {
+        background-color: #000;
+        transform: scale(1.2);
+    }
+    
+    .swiper-button-disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+        
+        /* Advanced Terminal */
+        .terminal {
+            background-color: #1e1e1e;
+            color: #f1f1f1;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: monospace;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .terminal-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+        }
+        
+        .terminal-buttons {
+            display: flex;
+            margin-right: 10px;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .terminal-content {
+            margin-top: 35px;
+            height: 200px;
+            overflow-y: auto;
+        }
+        
+        /* Live Code Editor */
+        .code-editor {
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .code-header {
+            background-color: #333;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .code-title {
+            color: #999;
+            font-size: 12px;
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        .code-content {
+            padding: 15px;
+            font-family: monospace;
+            color: #f1f1f1;
+            overflow-x: auto;
+        }
+        
+        /* Notification System */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        /* Progress Indicators */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: #f1f1f1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.1s;
+        }
+        
+        /* Interactive Pixel Grid */
+        .pixel-grid {
+            display: grid;
+            grid-template-columns: repeat(16, 1fr);
+            grid-gap: 1px;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto;
+        }
+        
+        .pixel {
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .pixel:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Manga Sound Effects */
+        .sound-effect {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3rem;
+            color: var(--manga-red);
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+            transform: rotate(-10deg);
+            display: inline-block;
+            margin: 20px;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .sound-effect {
+                font-size: 2rem;
+            }
+            
+            .pixel-grid {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Loading Screen with Progress -->
+    <div id="loading" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
+        <div class="w-16 h-16 border-4 border-black border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p class="text-xl font-bold manga-font">LOADING...</p>
+        <div class="mt-4 w-48 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div id="loadingBar" class="h-full bg-black" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Notification System -->
+    <div id="notification" class="notification">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="notificationText">Message sent successfully!</span>
+        </div>
+    </div>
+
+    <!-- Header with Navigation -->
+    <header class="manga-panel bg-white py-6 px-4 md:px-10 mb-8 sticky top-0 z-40 animate-fadeIn">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl md:text-4xl font-bold hover:text-accent transition-colors manga-font glitch" data-text="SCRIPTDEV">./noire</h1>
+            <div class="flex items-center space-x-6">
+                <nav class="hidden md:block">
+                    <ul class="flex space-x-4 md:space-x-8">
+                        <li><a href="#" class="hover:underline font-bold nav-link" data-section="home">Home</a></li>
+                        <li><a href="#projects" class="hover:underline nav-link" data-section="projects">Projects</a></li>
+                        <li><a href="#skills" class="hover:underline nav-link" data-section="skills">Skills</a></li>
+                        <li><a href="#about" class="hover:underline nav-link" data-section="about">About</a></li>
+                        <li><a href="#contact" class="hover:underline nav-link" data-section="contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <div class="dark-mode-toggle" id="darkModeToggle"></div>
+                    <button class="md:hidden text-2xl" id="mobileMenuButton">☰</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden mt-4" id="mobileMenu">
+            <ul class="space-y-2">
+                <li><a href="#" class="block hover:underline font-bold nav-link" data-section="home">Home</a></li>
+                <li><a href="#projects" class="block hover:underline nav-link" data-section="projects">Projects</a></li>
+                <li><a href="#skills" class="block hover:underline nav-link" data-section="skills">Skills</a></li>
+                <li><a href="#about" class="block hover:underline nav-link" data-section="about">About</a></li>
+                <li><a href="#contact" class="block hover:underline nav-link" data-section="contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section with Particle Background -->
+    <section id="home" class="container mx-auto px-4 md:px-10 mb-16 animate-fadeIn delay-100 relative">
+        <div id="particles-js" class="absolute inset-0 z-0"></div>
+        <div class="manga-panel bg-white p-8 md:p-12 text-center relative z-10">
+            <div class="manga-speed-lines"></div>
+            
+            <h2 class="text-2xl md:text-4xl font-bold mb-4 manga-font">HI. WELCOME</h2>
+            <p class="mb-6 text-lg">Sebagian kecil dari Proyek Script Bot & Script Web</p>
+            
+            <div class="max-w-md mx-auto relative">
+                <input type="text" placeholder="Search..." 
+                       class="w-full px-4 py-2 border-2 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-black">
+                <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black text-white px-4 py-1 rounded-full hover:bg-gray-800 transition">
+                    Go
+                </button>
+            </div>
+            
+            <div class="mt-8 flex justify-center space-x-4">
+                <a href="#projects" class="btn btn-primary animate-pulse">View Projects</a>
+                <a href="#contact" class="btn btn-outline">Hire Me</a>
+            </div>
+            
+            <div class="mt-8 animate-float">
+                <i class="fas fa-arrow-down text-3xl"></i>
+            </div>
+            
+            <div class="sound-effect animate-shake">BOOM!</div>
+        </div>
+    </section>
+
+    <!-- Stats Counter Section -->
+    <section class="container mx-auto px-4 md:px-10 mb-16 animate-fadeIn delay-200">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="manga-panel bg-white p-4 text-center">
+                <div class="text-3xl font-bold" id="projectCounter">0</div>
+                <div class="text-sm">Project</div>
+            </div>
+            <div class="manga-panel bg-white p-4 text-center">
+                <div class="text-3xl font-bold" id="clientCounter">0</div>
+                <div class="text-sm">Happy Clients</div>
+            </div>
+            <div class="manga-panel bg-white p-4 text-center">
+                <div class="text-3xl font-bold" id="codeCounter">0</div>
+                <div class="text-sm">Lines of Code</div>
+            </div>
+            <div class="manga-panel bg-white p-4 text-center">
+                <div class="text-3xl font-bold" id="coffeeCounter">0</div>
+                <div class="text-sm">Cups of Coffee</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Replace your existing Projects Gallery section with this improved version -->
+<section id="projects" class="container mx-auto px-4 md:px-10 mb-16 animate-fadeIn delay-300">
+    <div class="action-line">
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center inline-block px-4 bg-white">MY PROJECTS</h2>
+    </div>
+    
+    <div class="relative">
+        <!-- Swiper Container -->
+        <div class="swiper mySwiper manga-panel bg-white p-6">
+            <div class="swiper-wrapper">
+                <!-- WhatsApp Bot Project -->
+                <div class="swiper-slide">
+                    <div class="flip-card h-full">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front manga-panel bg-white p-6 flex flex-col">
+                                <div class="badge-container mb-3 flex justify-between">
+                                    <span class="text-xs bg-black text-white px-2 py-1 rounded">POPULAR</span>
+                                    <span class="text-xs text-gray-500">Updated: 2 days ago</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2">YUMEKO MD</h3>
+                                <p class="mb-4 flex-grow">BOT Pintar yang dapat membantu anda dengan segala fitur/menu nya</p>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="project-tag bg-yellow-100 text-yellow-800">JavaScript</span>
+                                    <span class="project-tag bg-blue-100 text-blue-800">WhatsApp API</span>
+                                    <span class="project-tag bg-green-100 text-green-800">MultiDevice</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-auto">
+                                    <span class="text-sm text-gray-500">Click to flip</span>
+                                    <div class="flex items-center">
+                                        <span class="text-sm font-bold mr-1">1,120</span>
+                                        <i class="fas fa-star text-yellow-500 text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flip-card-back manga-panel bg-gray-100 p-6 flex flex-col">
+                                <h3 class="text-xl font-bold mb-2">Features</h3>
+                                <ul class="list-disc pl-5 mb-4 flex-grow space-y-2 text-sm">
+                                    <li>Media downlaoder</li>
+                                    <li>Auto-reply system</li>
+                                    <li>Group management</li>
+                                    <li>Message scheduling</li>
+                                    <li>RPG Games</li>
+                                    <li>User analytics</li>
+                                </ul>
+                                <div class="flex justify-between items-center mt-auto">
+                                    <a href="#" class="text-sm underline hover:text-accent flex items-center">
+                                        <i class="fas fa-external-link-alt mr-1"></i> View Details
+                                    </a>
+                                    <span class="text-sm text-gray-500">Hover to flip back</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Group Guardian Bot -->
+                <div class="swiper-slide">
+                    <div class="flip-card h-full">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front manga-panel bg-white p-6 flex flex-col">
+                                <div class="badge-container mb-3 flex justify-between">
+                                    <span class="text-xs bg-blue-500 text-white px-2 py-1 rounded">NEW</span>
+                                    <span class="text-xs text-gray-500">Updated: 1 week ago</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2">CPANEL BOT</h3>
+                                <p class="mb-4 flex-grow">Bot yang dapat menginstal/membuat panel pterodactyl otomasi di WhatsApp.</p>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="project-tag bg-purple-100 text-purple-800">JavaScript</span>
+                                    <span class="project-tag bg-red-100 text-red-800">Pterodactyl</span>
+                                    <span class="project-tag bg-indigo-100 text-indigo-800">Automatic</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-auto">
+                                    <span class="text-sm text-gray-500">Click to flip</span>
+                                    <div class="flex items-center">
+                                        <span class="text-sm font-bold mr-1">680</span>
+                                        <i class="fas fa-star text-yellow-500 text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flip-card-back manga-panel bg-gray-100 p-6 flex flex-col">
+                                <h3 class="text-xl font-bold mb-2">Features</h3>
+                                <ul class="list-disc pl-5 mb-4 flex-grow space-y-2 text-sm">
+                                    <li>Install Panel</li>
+                                    <li>Support Create Max 8</li>
+                                    <li>Anti Overlimite</li>
+                                    <li>Custom command system</li>
+                                    <li>Private/Group Only</li>
+                                </ul>
+                                <div class="flex justify-between items-center mt-auto">
+                                    <a href="#" class="text-sm underline hover:text-accent flex items-center">
+                                        <i class="fas fa-external-link-alt mr-1"></i> View Details
+                                    </a>
+                                    <span class="text-sm text-gray-500">Hover to flip back</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Push Contact Bot -->
+                <div class="swiper-slide">
+                    <div class="flip-card h-full">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front manga-panel bg-white p-6 flex flex-col">
+                                <div class="badge-container mb-3 flex justify-between">
+                                    <span class="text-xs bg-green-500 text-white px-2 py-1 rounded">WEB SCRIPT</span>
+                                    <span class="text-xs text-gray-500">Updated: 3 weeks ago</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2">SCRIPT PORTOFOLIO</h3>
+                                <p class="mb-4 flex-grow">Portfolio web scripts with powerful displays, and all other interesting features, systems, animations.</p>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="project-tag bg-blue-100 text-blue-800">HTML</span>
+                                    <span class="project-tag bg-gray-100 text-gray-800">CSS</span>
+                                    <span class="project-tag bg-teal-100 text-teal-800">JS</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-auto">
+                                    <span class="text-sm text-gray-500">Click to flip</span>
+                                    <div class="flex items-center">
+                                        <span class="text-sm font-bold mr-1">1,753</span>
+                                        <i class="fas fa-star text-yellow-500 text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flip-card-back manga-panel bg-gray-100 p-6 flex flex-col">
+                                <h3 class="text-xl font-bold mb-2">Features</h3>
+                                <ul class="list-disc pl-5 mb-4 flex-grow space-y-2 text-sm">
+                                    <li>Fitur Menarik</li>
+                                    <li>Sistem Panel Admin/User</li>
+                                    <li>Login/Register</li>
+                                    <li>Mail Sender</li>
+                                    <li>Sistem Halaman e-commerce</li>
+                                    <li>Fitur Game</li>
+                                </ul>
+                                <div class="flex justify-between items-center mt-auto">
+                                    <a href="#" class="text-sm underline hover:text-accent flex items-center">
+                                        <i class="fas fa-external-link-alt mr-1"></i> View Details
+                                    </a>
+                                    <span class="text-sm text-gray-500">Hover to flip back</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- WhatsApp Web Scraper -->
+                <div class="swiper-slide">
+                    <div class="flip-card h-full">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front manga-panel bg-white p-6 flex flex-col">
+                                <div class="badge-container mb-3 flex justify-between">
+                                    <span class="text-xs bg-red-500 text-white px-2 py-1 rounded">POWERFUL</span>
+                                    <span class="text-xs text-gray-500">Updated: 1 month ago</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2">SCRIPT WEB STORE</h3>
+                                <p class="mb-4 flex-grow">Simple Store Web Dengan Tampilan Tailwind Dan Fitur Menarik lainnya.</p>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="project-tag bg-orange-100 text-orange-800">Html</span>
+                                    <span class="project-tag bg-blue-100 text-blue-800">Store</span>
+                                    <span class="project-tag bg-purple-100 text-purple-800">Tailwind</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-auto">
+                                    <span class="text-sm text-gray-500">Click to flip</span>
+                                    <div class="flex items-center">
+                                        <span class="text-sm font-bold mr-1">1,050</span>
+                                        <i class="fas fa-star text-yellow-500 text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flip-card-back manga-panel bg-gray-100 p-6 flex flex-col">
+                                <h3 class="text-xl font-bold mb-2">Features</h3>
+                                <ul class="list-disc pl-5 mb-4 flex-grow space-y-2 text-sm">
+                                    <li>Toko online</li>
+                                    <li>Pembayaran All Payment</li>
+                                    <li>Regiter/Login</li>
+                                    <li>Mail Sender</li>
+                                    <li>DB MySQL</li>
+                                    <li>Tampilan Tailwind Modern</li>
+                                </ul>
+                                <div class="flex justify-between items-center mt-auto">
+                                    <a href="#" class="text-sm underline hover:text-accent flex items-center">
+                                        <i class="fas fa-external-link-alt mr-1"></i> View Details
+                                    </a>
+                                    <span class="text-sm text-gray-500">Hover to flip back</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Auto Reply System -->
+                <div class="swiper-slide">
+                    <div class="flip-card h-full">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front manga-panel bg-white p-6 flex flex-col">
+                                <div class="badge-container mb-3 flex justify-between">
+                                    <span class="text-xs bg-purple-500 text-white px-2 py-1 rounded">SMART</span>
+                                    <span class="text-xs text-gray-500">Updated: 2 weeks ago</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2">AI ASISTENT</h3>
+                                <p class="mb-4 flex-grow">AI-powered auto-reply system with natural language processing.</p>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="project-tag bg-indigo-100 text-indigo-800">JavaScript</span>
+                                    <span class="project-tag bg-pink-100 text-pink-800">NLP</span>
+                                    <span class="project-tag bg-teal-100 text-teal-800">AI</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-auto">
+                                    <span class="text-sm text-gray-500">Click to flip</span>
+                                    <div class="flex items-center">
+                                        <span class="text-sm font-bold mr-1">890</span>
+                                        <i class="fas fa-star text-yellow-500 text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flip-card-back manga-panel bg-gray-100 p-6 flex flex-col">
+                                <h3 class="text-xl font-bold mb-2">Features</h3>
+                                <ul class="list-disc pl-5 mb-4 flex-grow space-y-2 text-sm">
+                                    <li>Natural language processing</li>
+                                    <li>Context-aware replies</li>
+                                    <li>Multi-language support</li>
+                                    <li>Learning capability</li>
+                                    <li>Custom response templates</li>
+                                    <li>Sentiment analysis</li>
+                                </ul>
+                                <div class="flex justify-between items-center mt-auto">
+                                    <a href="#" class="text-sm underline hover:text-accent flex items-center">
+                                        <i class="fas fa-external-link-alt mr-1"></i> View Details
+                                    </a>
+                                    <span class="text-sm text-gray-500">Hover to flip back</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Custom Navigation Buttons -->
+        <div class="swiper-nav-buttons flex justify-center mt-6 space-x-4">
+            <button class="swiper-button-prev btn btn-outline px-6 py-2 rounded-full hover:bg-black hover:text-white transition">
+                <i class="fas fa-chevron-left mr-2"></i>
+            </button>
+            <div class="swiper-pagination relative"></div>
+            <button class="swiper-button-next btn btn-outline px-6 py-2 rounded-full hover:bg-black hover:text-white transition">
+                <i class="fas fa-chevron-right ml 4"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+    <!-- Interactive Terminal Demo -->
+    <section class="container mx-auto px-4 md:px-10 mb-16">
+        <div class="manga-panel dashed p-6">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center">LIVE DEMO</h2>
+            
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="terminal-button" style="background-color: #ff5f56;"></div>
+                        <div class="terminal-button" style="background-color: #ffbd2e;"></div>
+                        <div class="terminal-button" style="background-color: #27c93f;"></div>
+                    </div>
+                    <div class="code-title">whatsapp-bot.js</div>
+                </div>
+                <div class="terminal-content" id="terminalContent">
+                    <div class="terminal-line">
+                        <span class="text-green-500">$</span> <span class="text-blue-400">node whatsapp-bot.js</span>
+                    </div>
+                    <div class="terminal-line">
+                        Initializing WhatsApp MultiDevice Bot v2.4.1...
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 flex justify-center space-x-4">
+                <button id="runDemo" class="btn btn-accent">Run Demo</button>
+                <button id="stopDemo" class="btn btn-outline">Stop</button>
+                <button id="clearDemo" class="btn btn-outline">Clear</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Editor with Copy Feature -->
+    <section class="container mx-auto px-4 md:px-10 mb-16">
+        <div class="manga-panel crosshatch p-6">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center">CODE SNIPPET</h2>
+            
+            <div class="code-editor">
+                <div class="code-header">
+                    <div class="code-buttons">
+                        <div class="code-button red"></div>
+                        <div class="code-button yellow"></div>
+                        <div class="code-button green"></div>
+                    </div>
+                    <div class="code-title">whatsapp-bot.js</div>
+                </div>
+                <div class="code-content" id="codeContent">
+                    <div class="code-line"><span class="text-blue-400">const</span> whatsapp = <span class="text-blue-400">require</span>(<span class="text-orange-400">'whatsapp-web.js'</span>);</div>
+                    <div class="code-line"><span class="text-blue-400">const</span> client = <span class="text-blue-400">new</span> whatsapp.Client();</div>
+                    <div class="code-line"><br></div>
+                    <div class="code-line"><span class="text-gray-500">// Event when QR code is received</span></div>
+                    <div class="code-line">client.on(<span class="text-orange-400">'qr'</span>, (qr) => {</div>
+                    <div class="code-line">    console.log(<span class="text-orange-400">'QR RECEIVED'</span>, qr);</div>
+                    <div class="code-line">    generateQR(qr); <span class="text-gray-500">// Display QR to user</span></div>
+                    <div class="code-line">});</div>
+                    <div class="code-line"><br></div>
+                    <div class="code-line"><span class="text-gray-500">// Event when client is ready</span></div>
+                    <div class="code-line">client.on(<span class="text-orange-400">'ready'</span>, () => {</div>
+                    <div class="code-line">    console.log(<span class="text-orange-400">'Client is ready!'</span>);</div>
+                    <div class="code-line">    startBotModules(); <span class="text-gray-500">// Initialize bot features</span></div>
+                    <div class="code-line">});</div>
+                    <div class="code-line"><br></div>
+                    <div class="code-line"><span class="text-gray-500">// Initialize connection</span></div>
+                    <div class="code-line">client.initialize();</div>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-center">
+                <button id="copyCode" class="btn btn-outline">
+                    <i class="fas fa-copy mr-2"></i> Copy Code
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Posts with Flip Animation -->
+    <section class="container mx-auto px-4 md:px-10 mb-16">
+        <div class="action-line">
+            <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center inline-block px-4 bg-white">LATEST POSTS</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Post 1 -->
+            <div class="flip-card h-full">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front manga-panel bg-white p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-xs bg-black text-white px-2 py-1 rounded">NEW</span>
+                            <span class="text-xs text-gray-500">3 days ago</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">WHATSAPP BUG EXPLOIT</h3>
+                        <p class="mb-4">Detailed analysis of recent WhatsApp vulnerabilities.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">Security</span>
+                            <span class="text-sm font-bold">1,120 <i class="fas fa-star text-yellow-500"></i></span>
+                        </div>
+                    </div>
+                    <div class="flip-card-back manga-panel bg-gray-100 p-6">
+                        <h4 class="font-bold mb-2">Key Points:</h4>
+                        <ul class="list-disc pl-5 mb-4 text-sm">
+                            <li>Message injection vulnerability</li>
+                            <li>Group chat takeover risks</li>
+                            <li>Encryption bypass methods</li>
+                            <li>Protection strategies</li>
+                        </ul>
+                        <div class="text-center">
+                            <a href="#" class="text-sm underline hover:text-accent">Read Full Article</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Post 2 -->
+            <div class="flip-card h-full">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front manga-panel bg-white p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-xs bg-black text-white px-2 py-1 rounded">POPULAR</span>
+                            <span class="text-xs text-gray-500">1 week ago</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">BOT PERFORMANCE OPTIMIZATION</h3>
+                        <p class="mb-4">Tips to make your WhatsApp bots run faster.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">Optimization</span>
+                            <span class="text-sm font-bold">850 <i class="fas fa-star text-yellow-500"></i></span>
+                        </div>
+                    </div>
+                    <div class="flip-card-back manga-panel bg-gray-100 p-6">
+                        <h4 class="font-bold mb-2">Key Points:</h4>
+                        <ul class="list-disc pl-5 mb-4 text-sm">
+                            <li>Memory management</li>
+                            <li>Event loop optimization</li>
+                            <li>Database caching</li>
+                            <li>Load balancing</li>
+                        </ul>
+                        <div class="text-center">
+                            <a href="#" class="text-sm underline hover:text-accent">Read Full Article</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Post 3 -->
+            <div class="flip-card h-full">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front manga-panel bg-white p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-xs bg-black text-white px-2 py-1 rounded">GUIDE</span>
+                            <span class="text-xs text-gray-500">2 weeks ago</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">MULTI DEVICE ARCHITECTURE</h3>
+                        <p class="mb-4">Design bots for multiple devices.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">Architecture</span>
+                            <span class="text-sm font-bold">1,050 <i class="fas fa-star text-yellow-500"></i></span>
+                        </div>
+                    </div>
+                    <div class="flip-card-back manga-panel bg-gray-100 p-6">
+                        <h4 class="font-bold mb-2">Key Points:</h4>
+                        <ul class="list-disc pl-5 mb-4 text-sm">
+                            <li>Session synchronization</li>
+                            <li>Message queuing</li>
+                            <li>Device failover</li>
+                            <li>Load distribution</li>
+                        </ul>
+                        <div class="text-center">
+                            <a href="#" class="text-sm underline hover:text-accent">Read Full Article</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-8">
+            <a href="#" class="btn btn-outline inline-block">View All Posts</a>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-4 md:px-10 mb-16">
+    <div class="manga-panel bg-white p-6">
+        <h3 class="text-xl font-bold mb-2">PLAYLIST NGODING</h3></h3>
+        <p class="mb-4"></p>
+        <div class="flex justify-between items-center">
+            <span class="text-sm" id="currentSong">I Wanna Be yours</span>
+            <span class="text-sm font-bold" id="currentArtist">Artict Monkey</span>
+        </div>
+        
+        <audio id="audioPlayer" src="https://j.top4top.io/m_3469r1nst0.mp3"></audio>
+        
+        <div class="music-progress my-4 bg-gray-200 rounded-full h-2 overflow-hidden">
+            <div class="music-progress-bar h-full bg-black rounded-full" id="musicProgress" style="width: 0%"></div>
+        </div>
+        
+        <div class="flex justify-between items-center mt-4">
+            <span class="text-sm" id="musicTime">0:00 / 3:45</span>
+            <div class="flex space-x-4">
+                <button class="text-xl hover:text-accent transition" id="prevTrack">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button class="text-2xl hover:text-accent transition" id="playPause">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="text-xl hover:text-accent transition" id="nextTrack">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+            <button class="text-xl hover:text-accent transition" id="volumeControl">
+                <i class="fas fa-volume-up"></i>
+            </button>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.7" class="w-20 hidden">
+        </div>
+        
+        <div class="mt-4 flex justify-center">
+            <button class="text-sm underline hover:text-accent" id="playlistToggle">
+                Show Playlist <i class="fas fa-chevron-down ml-1"></i>
+            </button>
+        </div>
+        
+        <div class="mt-4 hidden" id="playlist">
+            <ul class="space-y-2">
+                <li class="flex justify-between items-center p-2 hover:bg-gray-100 rounded cursor-pointer song-item" data-src="https://j.top4top.io/m_3469r1nst0.mp3" data-title="I Wanna Be Yours" data-artist="Artict Monkey" data-duration="3:45">
+                    <div>
+                        <span class="font-medium">1. I Wanna Be Yours</span>
+                        <span class="text-xs block text-gray-500">Artict Monkey</span>
+                    </div>
+                    <span class="text-sm text-gray-500">3:45</span>
+                </li>
+                <li class="flex justify-between items-center p-2 hover:bg-gray-100 rounded cursor-pointer song-item" data-src="https://c.top4top.io/m_3469mlbei1.mp3" data-title="Cinnamon Girl" data-artist="Lana del rey" data-duration="5:00">
+                    <div>
+                        <span class="font-medium">2. Cinnamon Girl</span>
+                        <span class="text-xs block text-gray-500">Lana del rey</span>
+                    </div>
+                    <span class="text-sm text-gray-500">5:00</span>
+                </li>
+                <li class="flex justify-between items-center p-2 hover:bg-gray-100 rounded cursor-pointer song-item" data-src="https://d.top4top.io/m_3469g8cwg0.mp3" data-title="Somebody`s Pleasure [Extended Version] " data-artist="Aziz Hedra" data-duration="4:41">
+                    <div>
+                        <span class="font-medium">3. Somebody`s Pleasure [Extended Version] </span>
+                        <span class="text-xs block text-gray-500">Aziz Hedra</span>
+                    </div>
+                    <span class="text-sm text-gray-500">4:41</span>
+                </li>
+                <li class="flex justify-between items-center p-2 hover:bg-gray-100 rounded cursor-pointer song-item" data-src="https://l.top4top.io/m_3469przg30.mp3" data-title="Piano Man" data-artist="Billy Joel" data-duration="4:34">
+                    <div>
+                        <span class="font-medium">4. Piano Man</span>
+                        <span class="text-xs block text-gray-500">Billy Joel</span>
+                    </div>
+                    <span class="text-sm text-gray-500">4:34</span>
+                </li>
+                <li class="flex justify-between items-center p-2 hover:bg-gray-100 rounded cursor-pointer song-item" data-src="https://b.top4top.io/m_3470agitj0.mp3" data-title="We Dont Talk Anymore" data-artist="Charlie Puth" data-duration="3:50">
+                    <div>
+                        <span class="font-medium">5. We Dont Talk Anymore</span>
+                        <span class="text-xs block text-gray-500">Charlie Puth</span>
+                    </div>
+                    <span class="text-sm text-gray-500">3:50</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+    <!-- Skills with Progress Bars -->
+    <section id="skills" class="container mx-auto px-4 md:px-10 mb-16">
+        <div class="action-line">
+            <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center inline-block px-4 bg-white">MY SKILLS</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="manga-panel bg-white p-6">
+                <h3 class="text-xl font-bold mb-4">TECHNICAL SKILLS</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span>JavaScript</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 80%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span>Node.js</span>
+                            <span>77%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-green-500 h-2.5 rounded-full" style="width: 77%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span>Python</span>
+                            <span>50%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-blue-500 h-2.5 rounded-full" style="width: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="manga-panel bg-white p-6">
+                <h3 class="text-xl font-bold mb-4">SPECIAL SKILL</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span>Turu 😅</span>
+                            <span>98%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-purple-500 h-2.5 rounded-full" style="width: 98%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span>Ngoding 🥵</span>
+                            <span>76%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-red-500 h-2.5 rounded-full" style="width: 76%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span>Mie Ayam 😳</span>
+                            <span>92%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-pink-500 h-2.5 rounded-full" style="width: 92%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Pixel Art Creator -->
+    <section class="container mx-auto px-4 md:px-10 mb-16">
+        <div class="manga-panel bg-white p-6 text-center">
+            <h3 class="text-xl font-bold mb-4">PIXEL ART CREATOR</h3>
+            <div class="flex justify-center mb-4">
+                <div class="pixel-grid" id="pixelGrid"></div>
+            </div>
+            <div class="flex justify-center space-x-4 mb-4">
+                <button id="colorBlack" class="w-8 h-8 bg-black rounded-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"></button>
+                <button id="colorRed" class="w-8 h-8 bg-red-500 rounded-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"></button>
+                <button id="colorBlue" class="w-8 h-8 bg-blue-500 rounded-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"></button>
+                <button id="colorGreen" class="w-8 h-8 bg-green-500 rounded-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"></button>
+                <button id="colorYellow" class="w-8 h-8 bg-yellow-500 rounded-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"></button>
+            </div>
+            <div class="flex justify-center space-x-4">
+                <button id="clearPixels" class="btn btn-outline">Clear</button>
+                <button id="savePixels" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about" class="container mx-auto px-4 md:px-10 mb-16">
+        <div class="manga-panel bg-white p-8 md:p-12">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6">ABOUT ME</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <div class="speech-bubble mb-6">
+                        <p>Cerita Singkat: Jadi gini lek..</p>
+                    </div>
+                    
+                    <p class="mb-4">penggarap WhatsApp bot MultiDevice, dan penggarap web porn</p>
+                    
+                    <div class="manga-impact p-4 mb-4 border-2 border-red-500 rounded-lg">
+                        <p>Kalo gua ga on wa gosah spam call ngentott, tele kan bisa gosah spam juga mwemek.</p>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h3 class="font-bold mb-2">Education</h3>
+                        <div class="pl-4 border-l-2 border-black">
+                            <p class="font-bold">Ga gada keahlian gabut aja</p>
+                            <p class="text-sm">cm lgi belajar betapa aja</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-48 h-48 bg-gray-300 manga-panel flex items-center justify-center mb-6 overflow-hidden">
+                        <img src="https://files.catbox.moe/fi92a8.jpeg" alt="Developer Avatar" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <div class="w-full manga-panel bg-white p-4 mb-6">
+                        <h4 class="font-bold mb-2">Fun Facts</h4>
+                        <ul class="list-disc pl-5 text-sm space-y-1">
+                            <li>Favotire game: Mobile Legends, Astral Guardian, Roblok😳</li>
+                            <li>Gabisa Tidur Sampe 24Jam</li>
+                            <li>Favorite animanga: Dr.Stone, One Piece, Dragon Ball</li>
+                            <li>Favorite food: Mie ayam, Milo😋, Lechi, Pear</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="flex space-x-4">
+                        <a href="https://github.com/Moriyamaaa" class="text-2xl hover:text-accent transition tooltip">
+                            <i class="fab fa-github"></i>
+                            <span class="tooltip-text"></span>
+                        </a>
+                        <a href="noire.busines@gmail.com" class="text-2xl hover:text-accent transition tooltip">
+                            <i class="fas fa-envelope"></i>
+                            <span class="tooltip-text"></span>
+                        </a>
+                        <a href="https://t.me/noir3xx" class="text-2xl hover:text-accent transition tooltip">
+                            <i class="fab fa-telegram"></i>
+                            <span class="tooltip-text"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="container mx-auto px-4 md:px-10 mb-16">
+        <div class="action-line">
+            <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center inline-block px-4 bg-white">CLIENT TESTIMONIALS</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="manga-panel bg-white p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gray-300 mr-4 overflow-hidden">
+                        <img src="https://files.catbox.moe/nhhd8l.jpg" alt="Client" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <div class="font-bold">Beeska Raja</div>
+                        <div class="text-sm">Other Business</div>
+                    </div>
+                </div>
+                <p>"kamu gay bang"</p>
+                <div class="mt-3 text-yellow-500">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            
+            <div class="manga-panel bg-white p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gray-300 mr-4 overflow-hidden">
+                        <img src="https://files.catbox.moe/lg274a.jpeg" alt="Client" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <div class="font-bold">Cakidekil45</div>
+                        <div class="text-sm">Online Store</div>
+                    </div>
+                </div>
+                <p>"Ingpokan Separ Pou"</p>
+                <div class="mt-3 text-yellow-500">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form with Validation -->
+    <section id="contact" class="container mx-auto px-4 md:px-10 mb-16">
+        <div class="manga-panel bg-white p-8 md:p-12">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6">GET IN TOUCH</h2>
+            <form id="contactForm" class="grid grid-cols-1 gap-6">
+                <div>
+                    <label for="name" class="block mb-2 font-bold">Name</label>
+                    <input type="text" id="name" class="w-full px-4 py-2 border-2 border-black rounded focus:outline-none focus:ring-2 focus:ring-black" required>
+                    <div id="nameError" class="text-red-500 text-sm mt-1 hidden">Please enter your name</div>
+                </div>
+                <div>
+                    <label for="email" class="block mb-2 font-bold">Email</label>
+                    <input type="email" id="email" class="w-full px-4 py-2 border-2 border-black rounded focus:outline-none focus:ring-2 focus:ring-black" required>
+                    <div id="emailError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid email</div>
+                </div>
+                <div>
+                    <label for="subject" class="block mb-2 font-bold">Subject</label>
+                    <select id="subject" class="w-full px-4 py-2 border-2 border-black rounded focus:outline-none focus:ring-2 focus:ring-black" required>
+                        <option value="">Select a subject</option>
+                        <option value="project">Project Inquiry</option>
+                        <option value="collab">Collaboration</option>
+                        <option value="support">Support</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div id="subjectError" class="text-red-500 text-sm mt-1 hidden">Please select a subject</div>
+                </div>
+                <div>
+                    <label for="message" class="block mb-2 font-bold">Message</label>
+                    <textarea id="message" rows="4" class="w-full px-4 py-2 border-2 border-black rounded focus:outline-none focus:ring-2 focus:ring-black" required></textarea>
+                    <div id="messageError" class="text-red-500 text-sm mt-1 hidden">Please enter your message</div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span id="submitText">Send Message</span>
+                    <span id="submitSpinner" class="hidden ml-2">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                </button>
+            </form>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="font-bold mb-4">Contact Info</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3"></i>
+                            <span>noire.busines@gmail.com</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-3"></i>
+                            <span>+62 896-8826-7395</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3"></i>
+                            <span>Jawa Barat, Indonesia</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold mb-4">Business Hours</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span>Monday - Friday</span>
+                            <span>08:20 AM - 22:30 PM</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Saturday</span>
+                            <span>09:00 AM - 22:30 PM</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Sunday</span>
+                            <span>Closed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-6 right-6 w-12 h-12 bg-black text-white rounded-full shadow-lg hidden items-center justify-center tooltip">
+        <i class="fas fa-arrow-up"></i>
+        <span class="tooltip-text"></span>
+    </button>
+
+    <!-- Footer -->
+    <footer class="manga-panel bg-black text-white py-8 px-4 md:px-10">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 manga-font">Thank you for visiting</h3>
+                    <p class="text-gray-400">Script Web ini dibuat hanya untuk mengisi kegabutan sehari-hari selain itu tidak lebih.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="#projects" class="text-gray-400 hover:text-white transition">Projects</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition">About</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">WhatsApp Bots</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Automation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Custom Scripts</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Consulting</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 mb-3">Subscribe to get updates on new projects and features.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 text-black rounded-l focus:outline-none w-full">
+                        <button class="bg-accent px-3 py-2 rounded-r hover:bg-red-600 transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p>© 2025 Noire All Rights Reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="https://github.com/Moriyamaaa" class="hover:text-accent transition tooltip">
+                        <i class="fab fa-github"></i>
+                        <span class="tooltip-text"></span>
+                    </a>
+                    <a href="noire.busines@gmail.com" class="hover:text-accent transition tooltip">
+                        <i class="fas fa-envelope"></i>
+                        <span class="tooltip-text"></span>
+                    </a>
+                    <a href="https://www.instagram.com/snn2nd._?igsh=czVyZzYxcmI0NW9l" class="hover:text-accent transition tooltip">
+                        <i class="fab fa-instagram"></i>
+                        <span class="tooltip-text"></span>
+                    </a>
+                    <a href="https://t.me/noir3xx" class="hover:text-accent transition tooltip">
+                        <i class="fab fa-telegram"></i>
+                        <span class="tooltip-text"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate loading with progress bar
+            let progress = 0;
+            const loadingInterval = setInterval(function() {
+                progress += Math.random() * 10;
+                if (progress > 100) progress = 100;
+                document.getElementById('loadingBar').style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(loadingInterval);
+                    document.getElementById('loading').style.opacity = '0';
+                    setTimeout(function() {
+                        document.getElementById('loading').style.display = 'none';
+                    }, 500);
+                }
+            }, 100);
+            
+            // Initialize particle.js background
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#000000" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: { enable: true, distance: 150, color: "#000000", opacity: 0.4, width: 1 },
+                    move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "grab" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                }
+            });
+            
+                // Update your Swiper initialization with these settings
+    const swiper = new Swiper(".mySwiper", {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+            renderBullet: function (index, className) {
+                return '<span class="' + className + '"></span>';
+            },
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+            640: {
+                slidesPerView: 2,
+            },
+            1024: {
+                slidesPerView: 3,
+            },
+        },
+        // Enable mousewheel control
+        mousewheel: {
+            forceToAxis: true,
+        },
+        // Add keyboard control
+        keyboard: {
+            enabled: true,
+            onlyInViewport: true,
+        },
+        // Better touch support
+        touchRatio: 0.7,
+        grabCursor: true,
+        // Auto height for cards
+        autoHeight: true,
+        // Loop if you want infinite scrolling
+        loop: false,
+    });
+    
+    // Add hover effect for navigation buttons
+    const prevBtn = document.querySelector('.swiper-button-prev');
+    const nextBtn = document.querySelector('.swiper-button-next');
+    
+    swiper.on('slideChange', function() {
+        if (swiper.isBeginning) {
+            prevBtn.classList.add('swiper-button-disabled');
+        } else {
+            prevBtn.classList.remove('swiper-button-disabled');
+        }
+        
+        if (swiper.isEnd) {
+            nextBtn.classList.add('swiper-button-disabled');
+        } else {
+            nextBtn.classList.remove('swiper-button-disabled');
+        }
+    });
+            
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            
+            darkModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark');
+                localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+            });
+            
+            // Check for saved dark mode preference
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark');
+            }
+            
+            // Animated counters
+            function animateCounter(elementId, target, duration = 2000) {
+                const element = document.getElementById(elementId);
+                const start = 0;
+                const increment = target / (duration / 16);
+                let current = start;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        clearInterval(timer);
+                        current = target;
+                    }
+                    element.textContent = Math.floor(current).toLocaleString();
+                }, 16);
+            }
+            
+            // Start counters when visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounter('projectCounter', 6);
+                        animateCounter('clientCounter', 2416);
+                        animateCounter('codeCounter', 40000);
+                        animateCounter('coffeeCounter', 56);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            observer.observe(document.querySelector('#projects'));
+            
+            // Scroll progress bar
+            window.addEventListener('scroll', function() {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById('progressBar').style.width = scrolled + '%';
+            });
+            
+            // Back to top button
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('hidden');
+                    backToTopBtn.classList.add('flex');
+                } else {
+                    backToTopBtn.classList.add('hidden');
+                    backToTopBtn.classList.remove('flex');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Terminal demo
+            const terminalContent = document.getElementById('terminalContent');
+            const runDemoBtn = document.getElementById('runDemo');
+            const stopDemoBtn = document.getElementById('stopDemo');
+            const clearDemoBtn = document.getElementById('clearDemo');
+            let terminalInterval;
+            
+            const terminalLines = [
+                "Initializing command modules...",
+                "Loading: message-queue.js",
+                "Loading: contact-manager.js",
+                "Loading: group-admin.js",
+                "All modules loaded successfully!",
+                "Connecting to WhatsApp servers...",
+                "Authentication complete",
+                "Bot is now online and ready",
+                "New message received from +1234567890",
+                "Processing auto-reply...",
+                "Message sent successfully",
+                "New group detected: 'Tech Enthusiasts'",
+                "Applying group rules...",
+                "Bot is monitoring 3 groups and 12 chats"
+            ];
+            
+            runDemoBtn.addEventListener('click', function() {
+                let lineIndex = 0;
+                terminalContent.innerHTML = '<div class="terminal-line"><span class="text-green-500">$</span> <span class="text-blue-400">node whatsapp-bot.js</span></div>';
+                
+                terminalInterval = setInterval(function() {
+                    if (lineIndex < terminalLines.length) {
+                        const line = document.createElement('div');
+                        line.className = 'terminal-line';
+                        line.textContent = terminalLines[lineIndex];
+                        terminalContent.appendChild(line);
+                        terminalContent.scrollTop = terminalContent.scrollHeight;
+                        lineIndex++;
+                    } else {
+                        const prompt = document.createElement('div');
+                        prompt.className = 'terminal-line';
+                        prompt.innerHTML = '<span class="text-green-500">$</span> <span class="text-blue-400">_</span>';
+                        terminalContent.appendChild(prompt);
+                        terminalContent.scrollTop = terminalContent.scrollHeight;
+                        clearInterval(terminalInterval);
+                    }
+                }, 800);
+            });
+            
+            stopDemoBtn.addEventListener('click', function() {
+                clearInterval(terminalInterval);
+                const prompt = document.createElement('div');
+                prompt.className = 'terminal-line';
+                prompt.innerHTML = '<span class="text-green-500">$</span> <span class="text-blue-400">process.exit()</span>';
+                terminalContent.appendChild(prompt);
+                
+                const exitLine = document.createElement('div');
+                exitLine.className = 'terminal-line';
+                exitLine.textContent = 'Bot shutdown complete';
+                terminalContent.appendChild(exitLine);
+                
+                const finalPrompt = document.createElement('div');
+                finalPrompt.className = 'terminal-line';
+                finalPrompt.innerHTML = '<span class="text-green-500">$</span> <span class="text-blue-400">_</span>';
+                terminalContent.appendChild(finalPrompt);
+                
+                terminalContent.scrollTop = terminalContent.scrollHeight;
+            });
+            
+            clearDemoBtn.addEventListener('click', function() {
+                clearInterval(terminalInterval);
+                terminalContent.innerHTML = '<div class="terminal-line"><span class="text-green-500">$</span> <span class="text-blue-400">_</span></div>';
+            });
+            
+            // Copy code button
+            const copyCodeBtn = document.getElementById('copyCode');
+            
+            copyCodeBtn.addEventListener('click', function() {
+                const code = `const whatsapp = require('whatsapp-web.js');
+const client = new whatsapp.Client();
+
+// Event when QR code is received
+client.on('qr', (qr) => {
+    console.log('QR RECEIVED', qr);
+    generateQR(qr); // Display QR to user
+});
+
+// Event when client is ready
+client.on('ready', () => {
+    console.log('Client is ready!');
+    startBotModules(); // Initialize bot features
+});
+
+// Initialize connection
+client.initialize();`;
+                
+                navigator.clipboard.writeText(code).then(() => {
+                    copyCodeBtn.innerHTML = '<i class="fas fa-check mr-2"></i> Copied!';
+                    setTimeout(() => {
+                        copyCodeBtn.innerHTML = '<i class="fas fa-copy mr-2"></i> Copy Code';
+                    }, 2000);
+                });
+            });
+            
+            // Music player functionality
+const audioPlayer = document.getElementById('audioPlayer');
+const playPauseBtn = document.getElementById('playPause');
+const prevTrackBtn = document.getElementById('prevTrack');
+const nextTrackBtn = document.getElementById('nextTrack');
+const musicProgress = document.getElementById('musicProgress');
+const musicTime = document.getElementById('musicTime');
+const playlistToggle = document.getElementById('playlistToggle');
+const playlist = document.getElementById('playlist');
+const currentSong = document.getElementById('currentSong');
+const currentArtist = document.getElementById('currentArtist');
+const volumeControl = document.getElementById('volumeControl');
+const volumeSlider = document.getElementById('volumeSlider');
+const songItems = document.querySelectorAll('.song-item');
+
+let isPlaying = false;
+let currentTrack = 0;
+
+// Playlist data
+const playlistData = Array.from(songItems).map(item => ({
+    src: item.dataset.src,
+    title: item.dataset.title,
+    artist: item.dataset.artist,
+    duration: item.dataset.duration,
+    element: item
+}));
+
+// Format time (seconds to MM:SS)
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+// Update progress bar
+function updateProgress() {
+    const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    musicProgress.style.width = `${progressPercent}%`;
+    musicTime.textContent = `${formatTime(audioPlayer.currentTime)} / ${playlistData[currentTrack].duration}`;
+}
+
+// Load and play track
+function loadTrack(index) {
+    if (index < 0) index = playlistData.length - 1;
+    if (index >= playlistData.length) index = 0;
+    
+    currentTrack = index;
+    const track = playlistData[currentTrack];
+    
+    audioPlayer.src = track.src;
+    currentSong.textContent = track.title;
+    currentArtist.textContent = track.artist;
+    
+    // Update active song in playlist
+    songItems.forEach(item => item.classList.remove('bg-gray-200'));
+    track.element.classList.add('bg-gray-200');
+    
+    if (isPlaying) {
+        audioPlayer.play();
+    }
+}
+
+// Play/pause toggle
+playPauseBtn.addEventListener('click', function() {
+    if (isPlaying) {
+        audioPlayer.pause();
+        this.innerHTML = '<i class="fas fa-play"></i>';
+    } else {
+        audioPlayer.play();
+        this.innerHTML = '<i class="fas fa-pause"></i>';
+    }
+    isPlaying = !isPlaying;
+});
+
+// Previous track
+prevTrackBtn.addEventListener('click', function() {
+    loadTrack(currentTrack - 1);
+});
+
+// Next track
+nextTrackBtn.addEventListener('click', function() {
+    loadTrack(currentTrack + 1);
+});
+
+// Click on progress bar to seek
+document.querySelector('.music-progress').addEventListener('click', function(e) {
+    const width = this.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audioPlayer.duration;
+    audioPlayer.currentTime = (clickX / width) * duration;
+});
+
+// Update progress
+audioPlayer.addEventListener('timeupdate', updateProgress);
+
+// Track ended
+audioPlayer.addEventListener('ended', function() {
+    loadTrack(currentTrack + 1);
+});
+
+// Volume control
+volumeControl.addEventListener('click', function() {
+    volumeSlider.classList.toggle('hidden');
+});
+
+volumeSlider.addEventListener('input', function() {
+    audioPlayer.volume = this.value;
+    if (this.value == 0) {
+        volumeControl.innerHTML = '<i class="fas fa-volume-mute"></i>';
+    } else if (this.value < 0.5) {
+        volumeControl.innerHTML = '<i class="fas fa-volume-down"></i>';
+    } else {
+        volumeControl.innerHTML = '<i class="fas fa-volume-up"></i>';
+    }
+});
+
+// Playlist toggle
+playlistToggle.addEventListener('click', function() {
+    playlist.classList.toggle('hidden');
+    const icon = this.querySelector('i');
+    if (playlist.classList.contains('hidden')) {
+        this.innerHTML = 'Show Playlist <i class="fas fa-chevron-down ml-1"></i>';
+    } else {
+        this.innerHTML = 'Hide Playlist <i class="fas fa-chevron-up ml-1"></i>';
+    }
+});
+
+// Click on playlist item to play
+songItems.forEach((item, index) => {
+    item.addEventListener('click', function() {
+        loadTrack(index);
+        if (!isPlaying) {
+            playPauseBtn.click();
+        }
+    });
+});
+
+// Initialize with first track
+loadTrack(0);
+audioPlayer.volume = 0.7;
+            
+            // Pixel Art Creator
+            const pixelGrid = document.getElementById('pixelGrid');
+            const colorBlack = document.getElementById('colorBlack');
+            const colorRed = document.getElementById('colorRed');
+            const colorBlue = document.getElementById('colorBlue');
+            const colorGreen = document.getElementById('colorGreen');
+            const colorYellow = document.getElementById('colorYellow');
+            const clearPixels = document.getElementById('clearPixels');
+            const savePixels = document.getElementById('savePixels');
+            
+            let currentColor = '#000000';
+            
+            // Create 16x16 grid
+            for (let i = 0; i < 256; i++) {
+                const pixel = document.createElement('div');
+                pixel.className = 'pixel';
+                pixel.style.backgroundColor = '#ffffff';
+                pixel.addEventListener('click', function() {
+                    this.style.backgroundColor = currentColor;
+                });
+                pixelGrid.appendChild(pixel);
+            }
+            
+            // Color selection
+            colorBlack.addEventListener('click', function() { currentColor = '#000000'; });
+            colorRed.addEventListener('click', function() { currentColor = '#e74c3c'; });
+            colorBlue.addEventListener('click', function() { currentColor = '#3498db'; });
+            colorGreen.addEventListener('click', function() { currentColor = '#2ecc71'; });
+            colorYellow.addEventListener('click', function() { currentColor = '#f1c40f'; });
+            
+            // Clear pixels
+            clearPixels.addEventListener('click', function() {
+                const pixels = document.querySelectorAll('.pixel');
+                pixels.forEach(pixel => {
+                    pixel.style.backgroundColor = '#ffffff';
+                });
+            });
+            
+            // Save pixels (simulated)
+            savePixels.addEventListener('click', function() {
+                const notification = document.getElementById('notification');
+                const notificationText = document.getElementById('notificationText');
+                
+                notificationText.textContent = 'Pixel art saved to gallery!';
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            });
+            
+            // Contact form submission
+            const contactForm = document.getElementById('contactForm');
+            const submitText = document.getElementById('submitText');
+            const submitSpinner = document.getElementById('submitSpinner');
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Reset errors
+                document.querySelectorAll('[id$="Error"]').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                
+                // Validate form
+                let isValid = true;
+                
+                if (!document.getElementById('name').value) {
+                    document.getElementById('nameError').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                if (!document.getElementById('email').value || 
+                    !document.getElementById('email').value.includes('@')) {
+                    document.getElementById('emailError').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                if (!document.getElementById('subject').value) {
+                    document.getElementById('subjectError').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                if (!document.getElementById('message').value) {
+                    document.getElementById('messageError').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                if (!isValid) {
+                    return;
+                }
+                
+                // Show loading state
+                submitText.textContent = 'Sending...';
+                submitSpinner.classList.remove('hidden');
+                
+                // Simulate form submission
+                setTimeout(function() {
+                    // Reset form
+                    contactForm.reset();
+                    
+                    // Show success message
+                    submitText.textContent = 'Message Sent!';
+                    submitSpinner.classList.add('hidden');
+                    
+                    // Show notification
+                    notificationText.textContent = 'Message sent successfully!';
+                    notification.classList.add('show');
+                    
+                    // Hide notification after 3 seconds
+                    setTimeout(function() {
+                        notification.classList.remove('show');
+                    }, 3000);
+                    
+                    // Reset button text after 3 seconds
+                    setTimeout(function() {
+                        submitText.textContent = 'Send Message';
+                    }, 3000);
+                }, 1500);
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu if open
+                        if (!mobileMenu.classList.contains('hidden') && targetId !== '#') {
+                            mobileMenu.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+            
+            // Highlight active nav link based on scroll position
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            function highlightNavLink() {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (pageYOffset >= sectionTop - 150) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('font-bold', 'text-accent');
+                    if (link.getAttribute('data-section') === current) {
+                        link.classList.add('font-bold', 'text-accent');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', highlightNavLink);
+            highlightNavLink(); // Run once on load
+            
+            // Easter egg - Konami code
+            const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+            let konamiIndex = 0;
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === konamiCode[konamiIndex]) {
+                    konamiIndex++;
+                    if (konamiIndex === konamiCode.length) {
+                        // Konami code completed
+                        document.body.classList.add('animate-shake');
+                        setTimeout(() => {
+                            document.body.classList.remove('animate-shake');
+                        }, 500);
+                        
+                        // Show special notification
+                        notificationText.innerHTML = '<i class="fas fa-star mr-2"></i> Secret unlocked!';
+                        notification.classList.add('show');
+                        setTimeout(() => {
+                            notification.classList.remove('show');
+                        }, 3000);
+                        
+                        konamiIndex = 0;
+                    }
+                } else {
+                    konamiIndex = 0;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
